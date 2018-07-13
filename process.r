@@ -4,36 +4,35 @@ library(xts)
 library(dygraphs)
 library(ggplot2)
 
-setwd("/home/alf/Scrivania/lav_hgts")
 
 
-ao_sheets=excel_sheets("ao.xls")
-nao_sheets=excel_sheets("nao.xls")
+ao_sheets=excel_sheets("data/ao.xls")
+nao_sheets=excel_sheets("data/nao.xls")
 
-aoCOOLING_SUN_LOW=read_xls("ao.xls",ao_sheets[1])
+aoCOOLING_SUN_LOW=read_xls("data/ao.xls",ao_sheets[1])
 aoCOOLING_SUN_LOW=as.data.frame(apply(aoCOOLING_SUN_LOW,2,as.numeric))
 
-aoCOOLING_SUN_NEUTRAL=read_xls("ao.xls",ao_sheets[3])
+aoCOOLING_SUN_NEUTRAL=read_xls("data/ao.xls",ao_sheets[3])
 aoCOOLING_SUN_NEUTRAL=as.data.frame(apply(aoCOOLING_SUN_NEUTRAL,2,as.numeric))
 
-aoCOOLING_SUN_HIGH=read_xls("ao.xls",ao_sheets[2])
+aoCOOLING_SUN_HIGH=read_xls("data/ao.xls",ao_sheets[2])
 aoCOOLING_SUN_HIGH=as.data.frame(apply(aoCOOLING_SUN_HIGH,2,as.numeric))
 
-aoSSW_SUN_LOW=read_xls("ao.xls",ao_sheets[4])
+aoSSW_SUN_LOW=read_xls("data/ao.xls",ao_sheets[4])
 aoSSW_SUN_LOW=as.data.frame(apply(aoSSW_SUN_LOW,2,as.numeric))
 
-aoSSW_SUN_NEUTRAL=read_xls("ao.xls",ao_sheets[6])
+aoSSW_SUN_NEUTRAL=read_xls("data/ao.xls",ao_sheets[6])
 aoSSW_SUN_NEUTRAL=as.data.frame(apply(aoSSW_SUN_NEUTRAL,2,as.numeric))
 
-aoSSW_SUN_HIGH=read_xls("ao.xls",ao_sheets[5])
+aoSSW_SUN_HIGH=read_xls("data/ao.xls",ao_sheets[5])
 aoSSW_SUN_HIGH=as.data.frame(apply(aoSSW_SUN_HIGH,2,as.numeric))
 
-naoCOOLING_SUN_LOW=read_xls("nao.xls",nao_sheets[1])
-naoCOOLING_SUN_NEUTRAL=read_xls("nao.xls",nao_sheets[3])
-naoCOOLING_SUN_HIGH=read_xls("nao.xls",nao_sheets[2])
-naoSSW_SUN_LOW=read_xls("nao.xls",nao_sheets[4])
-naoSSW_SUN_NEUTRAL=read_xls("nao.xls",nao_sheets[6])
-naoSSW_SUN_HIGH=read_xls("nao.xls",nao_sheets[5])
+naoCOOLING_SUN_LOW=read_xls("data/nao.xls",nao_sheets[1])
+naoCOOLING_SUN_NEUTRAL=read_xls("data/nao.xls",nao_sheets[3])
+naoCOOLING_SUN_HIGH=read_xls("data/nao.xls",nao_sheets[2])
+naoSSW_SUN_LOW=read_xls("data/nao.xls",nao_sheets[4])
+naoSSW_SUN_NEUTRAL=read_xls("data/nao.xls",nao_sheets[6])
+naoSSW_SUN_HIGH=read_xls("data/nao.xls",nao_sheets[5])
 
 naoCOOLING_SUN_LOW=as.data.frame(apply(naoCOOLING_SUN_LOW,2,as.numeric))
 naoCOOLING_SUN_NEUTRAL=as.data.frame(apply(naoCOOLING_SUN_NEUTRAL,2,as.numeric))
@@ -146,7 +145,7 @@ plot(res_cooling$LNvsH_AO)
 plot(res_cooling$LNvsH_NAO)
 
 file.remove("Tabella_strat_event.xls")
-XLConnect::writeWorksheetToFile("Tabella_strat_event.xls",res_cooling,"cooling")
+XLConnect::writeWorksheetToFile("data/Tabella_strat_event.xls",res_cooling,"cooling")
 
 #########################################################################################
 #########################################################################################
@@ -195,7 +194,7 @@ plot(res_warming$NvsH_AO)
 plot(res_warming$NvsH_NAO)
 
 
-XLConnect::writeWorksheetToFile("Tabella_strat_event.xls",res_warming,"warming")
+XLConnect::writeWorksheetToFile("data/Tabella_strat_event.xls",res_warming,"warming")
 
 
 
@@ -272,12 +271,12 @@ res_data_df=data.frame(IDday=1:60,
                      aoSSW_SUN_LNm,
                      aoSSW_SUN_LNsd)
 
-saveRDS(res_data_df,"res_data_df.rds")
+saveRDS(res_data_df,"data/res_data_df.rds")
 file.remove("Tabella_strat_stats.xls")
-XLConnect::writeWorksheetToFile("Tabella_strat_stats.xls",res_data_df,"data")
+XLConnect::writeWorksheetToFile("data/Tabella_strat_stats.xls",res_data_df,"data")
 
 
-res_data_df=readRDS("res_data_df.rds")
+res_data_df=readRDS("data/res_data_df.rds")
 ########################################################################################################
 
 ggplot(res_data_df, aes(x = IDday, y = naoCOOLING_SUN_LNm)) + geom_point() +  geom_smooth(method = 'loess',color="green",linetype="dashed")+
@@ -288,7 +287,8 @@ ggplot(res_data_df, aes(x = IDday, y = naoCOOLING_SUN_LNm)) + geom_point() +  ge
   xlim(0, 60)+ ggtitle("Mean NAO Profile in the post-event 60 days:\n High (red) and Low/Neutral Solar Activity  (green)",subtitle="Strat Cooling Events") +
   xlab("days") + ylab("NAO index")
 
-ggsave("nao_cooling.png")
+ggsave("images/nao_cooling.png")
+
 ########################################################################################################
 
 ggplot(res_data_df, aes(x = IDday, y = aoCOOLING_SUN_LNm)) + geom_point() +  geom_smooth(method = 'loess',color="green",linetype="dashed")+
@@ -298,7 +298,7 @@ ggplot(res_data_df, aes(x = IDday, y = aoCOOLING_SUN_LNm)) + geom_point() +  geo
   annotate("text", x = 40, y = 4.5, label = "AO/NAM-1000hPa in time daily differences \n not null from 39 to 56 days \n( WT p.value < .05)") + 
   xlim(0, 60)+ ggtitle("Mean AO/NAM-1000hPa Profile in the post-event 60\n days: High (red) and Low/Neutral Solar Activity (green)",subtitle="Strat Cooling Events") +
   xlab("days") + ylab("AO index")
-ggsave("ao_cooling.png")
+ggsave("images/ao_cooling.png")
 
 ########################################################################################################
 
@@ -309,7 +309,7 @@ ggplot(res_data_df, aes(x = IDday, y = naoSSW_SUN_LNm)) + geom_point() +  geom_s
   annotate("text", x = 48, y =0.4, label = "No significant NAO time\n daily differences  \n( WT p.value < .05)") + 
   xlim(0, 60)+ ggtitle("Mean NAO Profile in the post-event 60 days:\n High (red) and Low/Neutral Solar Activity State (green)",subtitle="Strat Warming Events") +
   xlab("days") + ylab("NAO index")
-ggsave("nao_warming.png")
+ggsave("images/nao_warming.png")
 
 ########################################################################################################
 
@@ -320,5 +320,5 @@ ggplot(res_data_df, aes(x = IDday, y = aoSSW_SUN_LNm)) + geom_point() +  geom_sm
   xlim(0, 60)+ ggtitle("Mean  AO/NAM-1000hPa Profile in the post-event 60 days:\n High (red) and Low/Neutral Solar Activity (green)",subtitle="Strat Warming Events") +
   xlab("days") + ylab("AO index")
 
-ggsave("ao_warming.png")
+ggsave("images/ao_warming.png")
 
